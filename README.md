@@ -1,88 +1,63 @@
-# CampusHub — Student Portal
+CampusHub – Student Portal
 
-CampusHub is a responsive student portal demonstration. It brings common campus information into one place: an overview dashboard, attendance summary, course progress, timetable, notices and upcoming events.
+CampusHub is a responsive student portal designed to help students view academic information, courses, attendance, assignments, notices and campus events.
 
-## Features
+Features
 
-- Responsive student dashboard for desktop and mobile
-- Student summary cards for attendance, courses, assignments and CGPA
-- Daily timetable and campus notice board
-- Course progress and upcoming event sections
-- Express.js REST API serving dashboard, notices, courses and event data
-- Downloadable student summary report
-- Health-check endpoint for the backend
+- Responsive student dashboard
+- Attendance and CGPA overview
+- Course progress tracking
+- Campus notices
+- Upcoming events
+- Downloadable student report
+- Backend REST API
 
-## Technology
+Technologies Used
 
-- Frontend: HTML5, CSS3 and vanilla JavaScript
-- Backend: Node.js and Express.js
-- API format: JSON
+- HTML5
+- CSS3
+- JavaScript
+- Node.js
+- Express.js
 
-## Project structure
+Project Structure
 
-```text
-CampusHub-Full-Stack/
-├── public/
-│   ├── index.html
-│   ├── styles.css
-│   └── script.js
-├── .env.example
-├── .gitignore
+CampusHub/
+├── index.html
+├── styles.css
+├── script.js
+├── server.js
 ├── package.json
-├── README.md
-└── server.js
-```
+└── README.md
 
-## Run locally
+Installation and Setup
 
-1. Install Node.js 18 or later.
-2. Download or clone this repository.
-3. Open a terminal in the project folder.
+1. Install Node.js (version 18 or later).
+2. Clone or download this repository.
+3. Open the project folder in a terminal.
 4. Install dependencies:
 
-   ```bash
-   npm install
-   ```
+npm install
 
-5. Start the application:
+5. Start the server:
 
-   ```bash
-   npm start
-   ```
+npm start
 
-6. Open `http://localhost:3000` in your browser.
+6. Open http://localhost:3000 in your browser.
 
-## API endpoints
+API Endpoints
 
-| Method | Endpoint | Description |
-|---|---|---|
-| GET | `/api/health` | Backend health check |
-| GET | `/api/dashboard` | Student dashboard summary |
-| GET | `/api/notices` | Campus notices |
-| GET | `/api/courses` | Course list and progress |
-| GET | `/api/events` | Upcoming campus events |
+Method| Endpoint| Description
+GET| /api/health| Server status
+GET| /api/dashboard| Student dashboard data
+GET| /api/notices| Campus notices
+GET| /api/courses| Course information
+GET| /api/events| Upcoming events
 
-Example response from `/api/dashboard`:
+Note
 
-```json
-{
-  "studentName": "Vansh",
-  "attendance": 86,
-  "coursesEnrolled": 6,
-  "assignmentsCompleted": 4,
-  "assignmentsTotal": 6,
-  "cgpa": 8.4
-}
-```
+This project currently uses demonstration data. It is not connected to an official university database.
 
-## Notes about demonstration data
+Author
 
-This repository uses sample data to demonstrate the interface and API. It is not connected to a university database, authentication service, or official student records. Replace the sample values with accurate data and add suitable authentication and database protections before using it for real student information.
-
-## Deployment
-
-The frontend and Express backend are designed to run together as one Node.js application on a host that supports Node.js. Configure the host to run `npm install` during build/setup and `npm start` as the start command. Set `PORT` only if required by the hosting provider.
-
-## Author
-
-Student project submission — CampusHub.
+Vansh Kaushik
