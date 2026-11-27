@@ -43,7 +43,7 @@ document.getElementById("eventBtn").addEventListener("click", () => showToast("C
 document.getElementById("downloadBtn").addEventListener("click", async () => {
   let report = "CAMPUSHUB — STUDENT SUMMARY\nStudent: CampusHub demo student\n";
   try {
-    const response = await fetch("/api/dashboard");
+    const response = await fetch("https://campushub-student-portal.onrender.com/api/dashboard")
     if (response.ok) {
       const data = await response.json();
       report += `Attendance: ${data.attendance}%\nCourses enrolled: ${data.coursesEnrolled}\nAssignments: ${data.assignmentsCompleted} of ${data.assignmentsTotal} completed\nCurrent CGPA: ${data.cgpa}\n`;
