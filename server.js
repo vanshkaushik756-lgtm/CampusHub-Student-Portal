@@ -7,7 +7,19 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 
-// Serve frontend files from the repository root
+// Allow Cloudflare frontend to connect to Render backend
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+  res.header("Access-Control-Allow-Headers", "Content-Type");
+
+  if (req.method === "OPTIONS") {
+    return res.sendStatus(204);
+  }
+
+  next();
+});
+
 app.use(express.static(__dirname));
 
 const dashboard = {
@@ -38,21 +50,9 @@ const notices = [
 ];
 
 const courses = [
-  {
-    id: 1,
-    name: "Business Communication",
-    progress: 72
-  },
-  {
-    id: 2,
-    name: "Principles of Management",
-    progress: 48
-  },
-  {
-    id: 3,
-    name: "Financial Accounting",
-    progress: 90
-  }
+  { id: 1, name: "Business Communication", progress: 72 },
+  { id: 2, name: "Principles of Management", progress: 48 },
+  { id: 3, name: "Financial Accounting", progress: 90 }
 ];
 
 app.get("/api/health", (req, res) => {
@@ -67,11 +67,17 @@ app.get("/api/dashboard", (req, res) => {
 });
 
 app.get("/api/notices", (req, res) => {
-  res.json({ count: notices.length, notices });
+  res.json({
+    count: notices.length,
+    notices
+  });
 });
 
 app.get("/api/courses", (req, res) => {
-  res.json({ count: courses.length, courses });
+  res.json({
+    count: courses.length,
+    courses
+  });
 });
 
 app.get("/api/events", (req, res) => {
