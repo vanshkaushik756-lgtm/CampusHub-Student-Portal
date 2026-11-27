@@ -47,12 +47,13 @@ npm start
 
 API Endpoints
 
-Method| Endpoint| Description
-GET| "/api/health"| Server status
-GET| "/api/dashboard"| Student dashboard data
-GET| "/api/notices"| Campus notices
-GET| "/api/courses"| Course information
-GET| "/api/events"| Upcoming events
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | `/api/health` | Server status |
+| GET | `/api/dashboard` | Student dashboard data |
+| GET | `/api/notices` | Campus notices |
+| GET | `/api/courses` | Course information |
+| GET | `/api/events` | Upcoming events |
 
 Note
 
