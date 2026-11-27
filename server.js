@@ -7,10 +7,9 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 
-// Allow Cloudflare frontend to connect to Render backend
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, OPTIONS");
   res.header("Access-Control-Allow-Headers", "Content-Type");
 
   if (req.method === "OPTIONS") {
@@ -22,7 +21,7 @@ app.use((req, res, next) => {
 
 app.use(express.static(__dirname));
 
-const dashboard = {
+let dashboard = {
   studentName: "Vansh",
   attendance: 86,
   coursesEnrolled: 6,
@@ -56,28 +55,64 @@ const courses = [
 ];
 
 app.get("/api/health", (req, res) => {
-  res.json({
-    status: "ok",
-    service: "CampusHub API"
-  });
+  res.json({ status: "ok", service: "CampusHub API" });
 });
 
 app.get("/api/dashboard", (req, res) => {
   res.json(dashboard);
 });
 
-app.get("/api/notices", (req, res) => {
+// Update dashboard data from the Admin Panel
+app.put("/api/dashboard", (req, res) => {
+  const {
+    studentName,
+    attendance,
+    coursesEnrolled,
+    assignmentsCompleted,
+    assignmentsTotal,
+    cgpa
+  } = req.body;
+
+  if (
+    typeof studentName !== "string" ||
+    !studentName.trim() ||
+    !Number.isFinite(attendance) ||
+    attendance < 0 || attendance > 100 ||
+    !Number.isInteger(coursesEnrolled) ||
+    coursesEnrolled < 0 ||
+    !Number.isInteger(assignmentsCompleted) ||
+    assignmentsCompleted < 0 ||
+    !Number.isInteger(assignmentsTotal) ||
+    assignmentsTotal < assignmentsCompleted ||
+    !Number.isFinite(cgpa) ||
+    cgpa < 0 || cgpa > 10
+  ) {
+    return res.status(400).json({
+      error: "Please provide valid dashboard details."
+    });
+  }
+
+  dashboard = {
+    studentName: studentName.trim(),
+    attendance,
+    coursesEnrolled,
+    assignmentsCompleted,
+    assignmentsTotal,
+    cgpa
+  };
+
   res.json({
-    count: notices.length,
-    notices
+    message: "Dashboard updated successfully",
+    dashboard
   });
 });
 
+app.get("/api/notices", (req, res) => {
+  res.json({ count: notices.length, notices });
+});
+
 app.get("/api/courses", (req, res) => {
-  res.json({
-    count: courses.length,
-    courses
-  });
+  res.json({ count: courses.length, courses });
 });
 
 app.get("/api/events", (req, res) => {
@@ -95,9 +130,7 @@ app.get("/api/events", (req, res) => {
 });
 
 app.use("/api", (req, res) => {
-  res.status(404).json({
-    error: "API endpoint not found"
-  });
+  res.status(404).json({ error: "API endpoint not found" });
 });
 
 app.get("*", (req, res) => {
