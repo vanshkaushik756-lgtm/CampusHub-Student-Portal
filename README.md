@@ -48,12 +48,11 @@ npm start
 API Endpoints
 
 Method| Endpoint| Description
-GET| /api/health| Server status
-GET| /api/dashboard| Student dashboard data
-GET| /api/notices| Campus notices
-GET| /api/courses| Course information
-GET| /api/events| Upcoming events
-
+GET| "/api/health"| Server status
+GET| "/api/dashboard"| Student dashboard data
+GET| "/api/notices"| Campus notices
+GET| "/api/courses"| Course information
+GET| "/api/events"| Upcoming events
 Note
 
 This project currently uses demonstration data. It is not connected to an official university database.
