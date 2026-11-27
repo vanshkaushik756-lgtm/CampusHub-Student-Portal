@@ -1,6 +1,6 @@
 async function loadDashboard() {
   try {
-    const response = await fetch("/api/dashboard");
+    const response = await fetch("https://campushub-student-portal.onrender.com/api/dashboard")
     if (!response.ok) throw new Error("Dashboard API unavailable");
     const data = await response.json();
     const values = document.querySelectorAll(".stat-value");
