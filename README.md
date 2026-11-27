@@ -54,7 +54,6 @@ API Endpoints
 | GET | `/api/notices` | Campus notices |
 | GET | `/api/courses` | Course information |
 | GET | `/api/events` | Upcoming events |
-
 Note
 
 This project currently uses demonstration data. It is not connected to an official university database.
