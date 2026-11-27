@@ -1,1 +1,154 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CampusHub | Admin Panel</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 30px 16px;
+      font-family: Arial, sans-serif;
+      background: #f3f5fa;
+      color: #172033;
+    }
+    .container {
+      max-width: 650px;
+      margin: 30px auto;
+      background: white;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 8px 30px #17203312;
+    }
+    h1 { margin-top: 0; }
+    p { color: #667085; line-height: 1.5; }
+    label {
+      display: block;
+      margin-top: 18px;
+      margin-bottom: 7px;
+      font-weight: bold;
+    }
+    input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #d5dbea;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+    button {
+      width: 100%;
+      margin-top: 25px;
+      padding: 14px;
+      border: 0;
+      border-radius: 8px;
+      background: #3157d5;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    button:disabled { opacity: .6; }
+    #message {
+      margin-top: 18px;
+      font-weight: bold;
+      line-height: 1.5;
+    }
+    a { color: #3157d5; }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <h1>CampusHub Admin Panel</h1>
+    <p>Update the student dashboard information below.</p>
+
+    <form id="adminForm">
+      <label for="studentName">Student Name</label>
+      <input id="studentName" required>
+
+      <label for="attendance">Attendance (%)</label>
+      <input id="attendance" type="number" min="0" max="100" step="0.1" required>
+
+      <label for="coursesEnrolled">Courses Enrolled</label>
+      <input id="coursesEnrolled" type="number" min="0" step="1" required>
+
+      <label for="assignmentsCompleted">Assignments Completed</label>
+      <input id="assignmentsCompleted" type="number" min="0" step="1" required>
+
+      <label for="assignmentsTotal">Total Assignments</label>
+      <input id="assignmentsTotal" type="number" min="0" step="1" required>
+
+      <label for="cgpa">CGPA (out of 10)</label>
+      <input id="cgpa" type="number" min="0" max="10" step="0.1" required>
+
+      <button id="saveButton" type="submit">Save Dashboard Changes</button>
+    </form>
+
+    <div id="message" role="status"></div>
+    <p><a href="/">Back to CampusHub Website</a></p>
+  </main>
+
+  <script>
+    const API = "https://campushub-student-portal.onrender.com/api/dashboard";
+    const form = document.getElementById("adminForm");
+    const message = document.getElementById("message");
+    const saveButton = document.getElementById("saveButton");
+
+    async function loadData() {
+      message.textContent = "Loading student information...";
+      try {
+        const response = await fetch(API);
+        if (!response.ok) throw new Error("Could not load dashboard data");
+
+        const data = await response.json();
+        document.getElementById("studentName").value = data.studentName;
+        document.getElementById("attendance").value = data.attendance;
+        document.getElementById("coursesEnrolled").value = data.coursesEnrolled;
+        document.getElementById("assignmentsCompleted").value = data.assignmentsCompleted;
+        document.getElementById("assignmentsTotal").value = data.assignmentsTotal;
+        document.getElementById("cgpa").value = data.cgpa;
+
+        message.textContent = "";
+      } catch (error) {
+        message.textContent = "Unable to load data. Please refresh and try again.";
+      }
+    }
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      saveButton.disabled = true;
+      message.textContent = "Saving changes...";
+
+      const data = {
+        studentName: document.getElementById("studentName").value.trim(),
+        attendance: Number(document.getElementById("attendance").value),
+        coursesEnrolled: Number(document.getElementById("coursesEnrolled").value),
+        assignmentsCompleted: Number(document.getElementById("assignmentsCompleted").value),
+        assignmentsTotal: Number(document.getElementById("assignmentsTotal").value),
+        cgpa: Number(document.getElementById("cgpa").value)
+      };
+
+      try {
+        const response = await fetch(API, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data)
+        });
+
+        const result = await response.json();
+        if (!response.ok) throw new Error(result.error || "Update failed");
+
+        message.textContent = "Success! Dashboard information has been updated.";
+      } catch (error) {
+        message.textContent = "Could not save changes: " + error.message;
+      } finally {
+        saveButton.disabled = false;
+      }
+    });
+
+    loadData();
+  </script>
+</body>
+</html>
+
